@@ -14,7 +14,7 @@ const Todo = require('../../models/Todo');
 router.get('/test', (req, res) => res.json({ msg: 'test successful' }));
 
 // @route   POST api/todos/new-todo
-// #desc    Create 
+// @desc    Create 
 // @access  Public || Private
 
 router.post('/new-todo', (req, res) => {
@@ -34,8 +34,14 @@ router.post('/new-todo', (req, res) => {
     .catch(err => res.status(400).json({ todonotfound: 'No Todos Found'}));
 });
 
-// @route   POST api/todos/new-todo
-// #desc    Create 
+// @route   GET api/todos/
+// @desc    Get all todos
 // @access  Public || Private
+
+router.get('/', (req, res) => {
+  Todo.find(Todo)
+    .then(todo => res.json(todo))
+    .catch(err => res.status(400).json({ notodo: 'No Fodos Found'}));
+})
 
 module.exports = router;
