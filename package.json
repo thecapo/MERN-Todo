@@ -14,7 +14,8 @@
     "nodemon": "^1.18.5"
   },
   "scripts": {
-    "start": "node server.js"
+    "start": "node server.js",
+    "server": "nodemon server.js"
   },
   "author": "carlo nino mabalatan",
   "license": "ISC"

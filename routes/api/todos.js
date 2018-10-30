@@ -87,12 +87,25 @@ router.patch('/edit/:id', (req, res) => {
     body.completedAt = new Date().getTime();
   } else {
     body.completed = false;
-    body.completed = null;
+    body.completedAt = null;
   }
 
   Todo.findByIdAndUpdate(id, {$set: body}, {new: true})
     .then(todo => res.json(todo))
     .catch(err => res.status(400).json({ cannotupdate: 'Cannot Update Todo' }));
+});
+
+// @route   DELETE api/todos/delete/:id
+// @desc    Get one todo
+// @access  Public || Private
+
+router.delete('/delete/:id', (req, res) => {
+  const id = req.params.id;
+
+  Todo.findByIdAndRemove(id)
+    .then(todo => res.json(todo))
+    .catch(err => res.status(400).json({ cannotremove: 'Cannot Remove Todo' }));
+
 });
 
 module.exports = router;
