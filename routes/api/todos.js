@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const _ = require('lodash');
 
 // Load Input Validation
 const validateTodoInput = require('../../validation/validateTodoInput');
@@ -65,6 +66,33 @@ router.get('/:id', (req, res) => {
     .findById(req.params.id)
     .then(todo => res.json(todo))
     .catch(err => res.status(400).json({ notodoid: 'No Todo with ID' }));
+});
+
+// @route   PATCH api/todos/edit/:id
+// @desc    Get one todo
+// @access  Public 
+
+
+router.patch('/edit/:id', (req, res) => {
+  const { errors, isValid } = validateTodoInput(req.body);
+
+  if (!isValid) {
+    return res.status(400).json(errors);
+  }
+
+  const id = req.params.id;
+  const body = _.pick(req.body, ['title', 'completed']);
+
+  if (_.isBoolean(body.completed) && body.completed) {
+    body.completedAt = new Date().getTime();
+  } else {
+    body.completed = false;
+    body.completed = null;
+  }
+
+  Todo.findByIdAndUpdate(id, {$set: body}, {new: true})
+    .then(todo => res.json(todo))
+    .catch(err => res.status(400).json({ cannotupdate: 'Cannot Update Todo' }));
 });
 
 module.exports = router;
