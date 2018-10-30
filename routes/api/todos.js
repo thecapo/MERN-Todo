@@ -31,17 +31,40 @@ router.post('/new-todo', (req, res) => {
   newTodo
     .save()
     .then(todo => res.json(todo))
-    .catch(err => res.status(400).json({ todonotfound: 'No Todos Found'}));
+    .catch(err => res.status(400).json({ todonotfound: 'No Todos Found' }));
 });
 
 // @route   GET api/todos/
 // @desc    Get all todos
-// @access  Public || Private
+// @access  Public 
 
 router.get('/', (req, res) => {
-  Todo.find(Todo)
+  Todo
+    .find(Todo)
     .then(todo => res.json(todo))
-    .catch(err => res.status(400).json({ notodo: 'No Fodos Found'}));
-})
+    .catch(err => res.status(400).json({ notodos: 'Todos Not Found' }));
+});
+
+// @route   GET api/todos/todo
+// @desc    Get one todo
+// @access  Public 
+
+router.get('/todo', (req, res) => {
+  Todo
+    .findOne(req.body.title)
+    .then(todo => res.json(todo))
+    .catch(err => res.status(400).json({ notodo: 'No Todo Found' }));
+});
+
+// @route   GET api/todos/:id
+// @desc    Get one todo
+// @access  Public 
+
+router.get('/:id', (req, res) => {
+  Todo
+    .findById(req.params.id)
+    .then(todo => res.json(todo))
+    .catch(err => res.status(400).json({ notodoid: 'No Todo with ID' }));
+});
 
 module.exports = router;
